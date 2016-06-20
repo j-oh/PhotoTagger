@@ -1,0 +1,9 @@
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\PhotoTagger.exe.config
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\PhotoTagger.exe
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\PhotoTagger.pdb
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\HtmlAgilityPack.dll
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\HtmlAgilityPack.pdb
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\HtmlAgilityPack.xml
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\obj\Debug\PhotoTagger.exe
+c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\obj\Debug\PhotoTagger.pdb
