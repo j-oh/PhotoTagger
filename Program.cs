@@ -12,7 +12,7 @@ namespace PhotoTagger
         static void Main(string[] args)
         {
             HtmlWeb web = new HtmlWeb();
-            HtmlDocument document = web.Load("http://www.pcmag.com/news/345423/teslas-model-s-will-sort-of-swim");
+            HtmlDocument document = web.Load("http://www.techtimes.com/articles/165916/20160620/oneplus-3-vs-google-nexus-5x-which-midrange-smartphone-should-you-buy.htm");
             HtmlNode[] nodes = document.DocumentNode.SelectNodes("//p").ToArray();
             String textDocument = "";
             foreach (HtmlNode item in nodes)
