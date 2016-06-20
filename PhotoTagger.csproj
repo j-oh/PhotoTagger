@@ -52,6 +52,16 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="conjunctions.txt" />
+    <Content Include="prepositions.txt" />
+    <Content Include="pronouns.txt" />
+    <Content Include="commonwords.txt" />
+    <Content Include="stopwords.txt" />
+    <Content Include="titles.txt" />
+    <Content Include="verbs.txt" />
+    <Content Include="webpages.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
