@@ -57,6 +57,7 @@ namespace PhotoTagger
                     {
                         if (title)
                         {
+                            weight_list.ElementAt(i).points++;
                             weight_list[i].points++;
                         }
                         else
