@@ -55,13 +55,18 @@ namespace PhotoTagger
 
             List<word_freq> wordList = Occurrence.freq_check(textDocument);//calls a frequency check (see Occurrences.cs)
             RemoveWords(wordList, "stopwords.txt");//removes occurrences of words from list based on a txt document of stopwords(see stopwords.txt)
+            List<word_weight> weightedList = TitleChecker.InitWordWeight(wordList);
+            TitleChecker.CompareToTitle(true, weightedList, GetNodeText(title));
+            TitleChecker.CompareToTitle(false, weightedList, GetNodeText(subtitles[0]));
+            var new_list = weightedList.OrderBy(x => -x.points);
+            weightedList = new_list.ToList<word_weight>();
             int wordLimit = 15;
-            if (wordLimit > wordList.Count)
-                wordLimit = wordList.Count;
+            if (wordLimit > weightedList.Count)
+                wordLimit = weightedList.Count;
             for (int i = 0; i < wordLimit; i++)
             {
-                word_freq word = wordList[i];
-                Console.WriteLine(word.word + ": " + word.freq);//Debug test print
+                word_weight word = weightedList[i];
+                Console.WriteLine(word.word + ": " + word.points);//Debug test print
             }
 
             Console.ReadLine();//keep console open

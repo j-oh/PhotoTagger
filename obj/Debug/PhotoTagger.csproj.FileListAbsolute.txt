@@ -11,3 +11,11 @@ C:\Users\klittle\PhotoTagger\bin\Debug\PhotoTagger.exe.config
 C:\Users\klittle\PhotoTagger\obj\Debug\PhotoTagger.exe
 C:\Users\klittle\PhotoTagger\obj\Debug\PhotoTagger.pdb
 C:\Users\klittle\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
+C:\Users\chstevens\PhotoTagger\bin\Debug\PhotoTagger.exe.config
+C:\Users\chstevens\PhotoTagger\bin\Debug\PhotoTagger.exe
+C:\Users\chstevens\PhotoTagger\bin\Debug\PhotoTagger.pdb
+C:\Users\chstevens\PhotoTagger\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\chstevens\PhotoTagger\bin\Debug\HtmlAgilityPack.xml
+C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
+C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.exe
+C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.pdb
