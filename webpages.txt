@@ -1,6 +1,12 @@
 https://www.englishclub.com/vocabulary/common-words.htm
 http://www.online-utility.org/text/frequent_words.jsp
+
 http://www.forbes.com/sites/dougyoung/2016/06/20/apple-loses-but-really-wins-in-china-court-ruling/#644f8c862eb4
 http://www.nytimes.com/2016/06/21/us/politics/corey-lewandowski-donald-trump.html?_r=0
 http://www.pcmag.com/news/345423/teslas-model-s-will-sort-of-swim (works)
 http://www.techtimes.com/articles/165916/20160620/oneplus-3-vs-google-nexus-5x-which-midrange-smartphone-should-you-buy.htm (works)
+http://abcnews.go.com/Politics/donald-trump-slams-hillary-clinton-world-class-liar/story?id=40040353 (works)
+https://www.washingtonpost.com/news/wonk/wp/2015/12/12/the-four-basic-reasons-that-explain-why-donald-trump-actually-is-so-popular/ (works)
+	title: "//h1"
+	subtitle: "//span[@class='pb-caption']"
+
