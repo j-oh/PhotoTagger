@@ -33,7 +33,7 @@ namespace PhotoTagger
             //    }
             //}
 
-            document = new string(document.ToCharArray().Where(c => (!char.IsPunctuation(c) || c == '\'')).ToArray());
+            document = new string(document.ToCharArray().Where(c => (!char.IsPunctuation(c) || c == '\'')).ToArray());//does the same as the above commented code
 
             while(document.IndexOf("  ") != -1)
             {
