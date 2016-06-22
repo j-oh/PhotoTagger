@@ -88,8 +88,6 @@ namespace PhotoTagger
                         return "meta[@property='og:title']";
                     else
                         return "title";
-                    break;
-
                 case "subtitle":
                     if (url.IndexOf("washingtonpost.com") >= 0)
                         return "span[@class='pb-caption']";
@@ -99,7 +97,6 @@ namespace PhotoTagger
                         return "span[@class='caption-text']";
                     else
                         return "meta[@property='og:description']";
-                    break;
             }
         }
 
