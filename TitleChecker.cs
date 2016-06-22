@@ -24,7 +24,7 @@ namespace PhotoTagger
             List<word_weight> weight_list = new List<word_weight>();
             foreach (word_freq freq in freq_list)
             {
-                weight_list.Add(new word_weight(freq.word, freq.freq/6));//init word_weights based on words in the freq_list
+                weight_list.Add(new word_weight(freq.word, (freq.freq/6)));//init word_weights based on words in the freq_list
             }
             return weight_list;//returns list with all words from freq_list ready to be scored
         }//InitWordWeight(List<word_freq> freq_list) \
@@ -60,7 +60,7 @@ namespace PhotoTagger
                         if (title)
                         {
                             word_weight w = weight_list.ElementAt(i);
-                            w.points += 2;
+                            w.points += 3;
                             weight_list[i] = w;
                         }
                         else
