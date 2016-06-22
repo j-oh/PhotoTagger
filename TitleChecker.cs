@@ -57,12 +57,15 @@ namespace PhotoTagger
                     {
                         if (title)
                         {
-                            weight_list.ElementAt(i).points++;
-                            weight_list[i].points++;
+                            word_weight w = weight_list.ElementAt(i);
+                            w.points++;//point values are arbitrary and may be altered
+                            weight_list[i] = w;
                         }
                         else
                         {
-                            weight_list[i].points += 2;
+                            word_weight w = weight_list.ElementAt(i);
+                            w.points+=2;//points are arbitrary at the moment
+                            weight_list[i] = w;
                         }
                     }
                 } while (index != -1);
