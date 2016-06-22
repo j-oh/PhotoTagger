@@ -15,11 +15,11 @@ namespace PhotoTagger
             String url;
             List<String> urlChoices = new List<String>();
             urlChoices.Add("https://www.washingtonpost.com/politics/trumps-top-example-of-foreign-experience-a-scottish-golf-course-losing-millions/2016/06/22/12ae9cb0-1883-11e6-9e16-2e5a123aac62_story.html?hpid=hp_hp-top-table-main_scotland_1250pm%3Ahomepage%2Fstory");
-            urlChoices.Add("http://abcnews.go.com/Entertainment/ben-affleck-happy-batman-script/story?id=40040351");
-            urlChoices.Add("http://www.pcmag.com/news/345423/teslas-model-s-will-sort-of-swim");
+            urlChoices.Add("http://abcnews.go.com/Politics/donald-trump-slams-hillary-clinton-world-class-liar/story?id=40040353");
+            urlChoices.Add("http://www.pcmag.com/news/343547/the-growing-threat-of-ransomware");
             urlChoices.Add("http://www.techtimes.com/articles/165916/20160620/oneplus-3-vs-google-nexus-5x-which-midrange-smartphone-should-you-buy.htm");
             urlChoices.Add("http://www.forbes.com/sites/dougyoung/2016/06/20/apple-loses-but-really-wins-in-china-court-ruling/#644f8c862eb4");
-            urlChoices.Add("http://www.techtimes.com/articles/165916/20160620/oneplus-3-vs-google-nexus-5x-which-midrange-smartphone-should-you-buy.htm");
+            urlChoices.Add("http://www.nytimes.com/2016/06/21/us/politics/corey-lewandowski-donald-trump.html?_r=0");
             Console.WriteLine("Pick a number for a url\n");
             for (int i = 0; i < urlChoices.Count; i++)
                 Console.WriteLine(i + ":  " + urlChoices[i] + "\n");
@@ -34,7 +34,7 @@ namespace PhotoTagger
 
             String titleTag = CheckWebsiteTags(url, "title");
             HtmlNode title = document.DocumentNode.SelectNodes("//" + titleTag).First();
-            Console.WriteLine("\n\nTitle\n\n" + title.InnerText + "\n\n");
+            Console.WriteLine("\n\nTitle\n\n" + GetNodeText(title) + "\n\n");
 
             HtmlNode[] subtitles = new HtmlNode[0];
             String subtitleTag = CheckWebsiteTags(url, "subtitle");
@@ -43,14 +43,7 @@ namespace PhotoTagger
             if (subtitles != null)
             {
                 for (int i = 0; i < subtitles.Length; i++)
-                {
-                    HtmlNode subtitle = subtitles[i];
-                    HtmlAttribute desc = subtitle.Attributes["content"];
-                    if (desc != null)
-                        Console.Write("Description " + (i + 1) + "\n\n" + desc.Value + "\n\n\n");
-                    else
-                        Console.Write("Description " + (i + 1) + "\n\n" + subtitle.InnerText + "\n\n\n");
-                }
+                    Console.WriteLine("Description " + (i + 1) + "\n\n" + GetNodeText(subtitles[i]) + "\n\n\n");
             }
 
             HtmlNode[] paragraphs = new HtmlNode[0]; //gets all document lines in the <p> tags
@@ -58,7 +51,8 @@ namespace PhotoTagger
             AddToArray(ref paragraphs, GetTagArray(document, "//p[@class='story-body-text story-content']"));
             String textDocument = "";
             foreach (HtmlNode item in paragraphs)
-                textDocument += item.InnerText;//builds a string version of the text document
+                textDocument += GetNodeText(item);
+
             List<word_freq> wordList = Occurrence.freq_check(textDocument);//calls a frequency check (see Occurrences.cs)
             RemoveWords(wordList, "stopwords.txt");//removes occurrences of words from list based on a txt document of stopwords(see stopwords.txt)
             int wordLimit = 15;
@@ -73,6 +67,15 @@ namespace PhotoTagger
             Console.ReadLine();//keep console open
         }
 
+        private static String GetNodeText(HtmlNode node)
+        {
+            HtmlAttribute desc = node.Attributes["content"];
+            if (desc != null)
+                return desc.Value;
+            else
+                return node.InnerText;
+        }
+
         private static String CheckWebsiteTags(String url, String type)
         {
             switch (type)
@@ -81,8 +84,8 @@ namespace PhotoTagger
                 default:
                     if (url.IndexOf("washingtonpost.com") >= 0 || url.IndexOf("pcmag.com") >= 0)
                         return "h1";
-                    else if (url.IndexOf("abcnews") >= 0)
-                        return "meta[@name='description']";
+                    else if (url.IndexOf("techtimes.com") >= 0)
+                        return "meta[@property='og:title']";
                     else
                         return "title";
                     break;
@@ -91,12 +94,11 @@ namespace PhotoTagger
                     if (url.IndexOf("washingtonpost.com") >= 0)
                         return "span[@class='pb-caption']";
                     else if (url.IndexOf("abcnews") >= 0)
-                        return "meta[@name='description']";
-                        //return "span[@class='caption']";
-                    else if (url.IndexOf("pcmag.com") >= 0)
-                        return "meta[@property='og:description']";
+                        return "span[@class='caption']";
+                    else if (url.IndexOf("nytimes.com") >= 0)
+                        return "span[@class='caption-text']";
                     else
-                        return "meta";
+                        return "meta[@property='og:description']";
                     break;
             }
         }
