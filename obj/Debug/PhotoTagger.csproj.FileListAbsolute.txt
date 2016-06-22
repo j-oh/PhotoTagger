@@ -7,3 +7,7 @@ c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\D
 c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
 c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\obj\Debug\PhotoTagger.exe
 c:\users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\obj\Debug\PhotoTagger.pdb
+C:\Users\klittle\PhotoTagger\bin\Debug\PhotoTagger.exe.config
+C:\Users\klittle\PhotoTagger\obj\Debug\PhotoTagger.exe
+C:\Users\klittle\PhotoTagger\obj\Debug\PhotoTagger.pdb
+C:\Users\klittle\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
