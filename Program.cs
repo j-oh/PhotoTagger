@@ -28,13 +28,13 @@ namespace PhotoTagger
             RemoveWords(wordList, "conjunctions.txt");
             RemoveWords(wordList, "commonwords.txt");*/
             RemoveWords(wordList, "stopwords.txt");//removes occurrences of words from list based on a txt document of stopwords(see stopwords.txt)
-            foreach(word_freq word in wordList)
+            foreach (word_freq word in wordList)
             {
                 Console.WriteLine(word.word + ": " + word.freq);//Debug test print
             }
             Console.ReadLine();//keep console open
         }
-        
+
         private static void RemoveWords(List<word_freq> wordList, String filename)//params: wordList-List of occurrences to have removed, filename-file with words to be removed
         {
             try
