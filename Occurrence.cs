@@ -35,10 +35,6 @@ namespace PhotoTagger
 
             document = new string(document.ToCharArray().Where(c => (!char.IsPunctuation(c) || c == '\'')).ToArray());//does the same as the above commented code
 
-            while(document.IndexOf("  ") != -1)
-            {
-                document = document.Replace("  ", " ");//replace double space with single space
-            }
             List<word_freq> freq_list = new List<word_freq>();
             while (document != "")
             {
