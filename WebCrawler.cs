@@ -9,13 +9,14 @@ namespace PhotoTagger
 {
     class WebCrawler
     {
-        String startUrl;
+        String startUrl, originUrl;
         String key;
 
         public WebCrawler() // Only works with Wikipedia at the moment but can be easily configured to work with other websites as well
         {
             startUrl = "https://en.wikipedia.org/wiki/Main_Page";
             key = "/wiki/";
+            originUrl = startUrl.Substring(0, startUrl.IndexOf(key));
             Crawl();
         }
 
@@ -25,28 +26,18 @@ namespace PhotoTagger
             HtmlWeb web = new HtmlWeb();
             HtmlDocument document;
             Random random = new Random();
-            int spaceIndex = 0;
-            Console.Write("     ");
             while (currentUrl != null)
             {
                 document = web.Load(currentUrl);
                 if (!currentUrl.Equals(startUrl))
-                {
-                    if (!AnalyzePage(document, spaceIndex))
-                    {
-                        spaceIndex = 0;
-                        currentUrl = startUrl;
-                    }
-                }
+                    AnalyzePage(document);
+                Console.WriteLine(currentUrl);
                 HtmlNode[] nextUrls;
                 var urlNodes = document.DocumentNode.SelectNodes("//a");
                 if (urlNodes != null)
                     nextUrls = urlNodes.ToArray();
                 else
-                {
-                    currentUrl = startUrl;
-                    break;
-                }
+                    nextUrls = new HtmlNode[0];
                 List<String> potentialUrls = new List<String>();
                 foreach (HtmlNode nextUrl in nextUrls)
                 {
@@ -56,15 +47,21 @@ namespace PhotoTagger
                 if (potentialUrls.Count > 0)
                 {
                     int choice = random.Next(potentialUrls.Count - 1);
-                    currentUrl = "https://en.wikipedia.org" + potentialUrls[choice];
+                    currentUrl = potentialUrls[choice];
                 }
                 else
                     currentUrl = startUrl;
-                spaceIndex++;
+                if (currentUrl.IndexOf("http") < 0)
+                    currentUrl = originUrl + currentUrl;
             }
         }
 
-        private bool AnalyzePage(HtmlDocument document, int spaceIndex) // Takes the current page's information and outputs one word based on spaceIndex
+        private void AnalyzePage(HtmlDocument document)
+        {
+
+        }
+
+        private bool AnalyzePage(HtmlDocument document, int spaceIndex) // Takes the current page's information and outputs one word based on spaceIndex (unused)
         {
             var paragraphNodes = document.DocumentNode.SelectNodes("//p");
             bool added = false;
