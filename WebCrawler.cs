@@ -42,7 +42,7 @@ namespace PhotoTagger
             SearchTags();
         }
 
-        private void Crawl() // Goes to random links in the current page's source and processes them into a jumble of words
+        private void Crawl() // Goes to random links in the current page's source and adds pictures + tags to pictureIndex until crawlLimit reaches 0
         {
             String currentUrl = startUrl;
             HtmlWeb web = new HtmlWeb();
@@ -83,7 +83,7 @@ namespace PhotoTagger
             }
         }
 
-        private void IndexTags()
+        private void IndexTags() // Transfers information from pictureIndex to tagIndex to make it easy to search
         {
             Console.WriteLine("Indexing tags...\n");
             foreach (KeyValuePair<String, List<Tag>> pair in pictureIndex)
@@ -108,7 +108,7 @@ namespace PhotoTagger
             }
         }
 
-        private void SearchTags()
+        private void SearchTags() // Search for pictures using tags
         {
             String searchTag = "";
             while (searchTag != "q")
@@ -133,7 +133,7 @@ namespace PhotoTagger
             }
         }
 
-        private void AnalyzeWikipediaPage(HtmlDocument document)
+        private void AnalyzeWikipediaPage(HtmlDocument document) // Uses subtitles of Wikipedia article pictures to tag them
         {
             HtmlNode[] pictureNodes = new HtmlNode[0];
             pictureNodes = GetNodeArray(document, "//div[@class='thumbcaption']");
@@ -216,42 +216,6 @@ namespace PhotoTagger
             array1.CopyTo(combinedArray, 0);
             array2.CopyTo(combinedArray, array1.Length);
             array1 = combinedArray;
-        }
-
-        private bool AnalyzePage(HtmlDocument document, int spaceIndex) // Takes the current page's information and outputs one word based on spaceIndex (unused)
-        {
-            var paragraphNodes = document.DocumentNode.SelectNodes("//p");
-            bool added = false;
-            bool firstWord = false;
-            if (spaceIndex == 1)
-                firstWord = true;
-            //Console.WriteLine(firstWord);
-            if (paragraphNodes != null)
-            {
-                String info = paragraphNodes.First().InnerText;
-                while (info.IndexOf(" ") >= 0)
-                {
-                    String text = info.Substring(0, info.IndexOf(" ") + 1);
-                    if (spaceIndex <= 0)
-                    {
-                        if (!text.Any(Char.IsPunctuation) || text.IndexOf(".") == text.Length - 2)
-                        {
-                            if (!firstWord)
-                                Console.Write(text);
-                            else
-                                Console.Write(UppercaseFirst(text));
-                        }
-                        if (text.IndexOf(".") == text.Length - 2)
-                            Console.Write("\n\n     ");
-                        else
-                            added = true;
-                        break;
-                    }
-                    info = info.Substring(info.IndexOf(" ") + 1);
-                    spaceIndex--;
-                }
-            }
-            return added;
         }
 
         private String UppercaseFirst(String s)
