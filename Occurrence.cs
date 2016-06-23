@@ -24,14 +24,17 @@ namespace PhotoTagger
         {
             document = document.ToLower();//don't compare case
             document = document.Trim();//remove leading and trailing whitespace
-            for(int i = 0; i < document.Length;i++)
-            {
-                if (Char.IsPunctuation(document, i) && document.ToCharArray()[i] != '\'')//find non ' punctuation
-                {
-                    document = document.Replace(document.ToCharArray()[i], ' ');//remove all occurrences of non ' punctuation
-                    i--;//don't get ob1
-                }
-            }
+            //for(int i = 0; i < document.Length;i++)
+            //{
+            //    if ( (Char.IsPunctuation(document, i) && (document.ToCharArray()[i] != '\'')))//find non ' punctuation(39 is the dec equivalent of ')
+            //    {
+            //        document = document.Replace(document.ToCharArray()[i], ' ');//remove all occurrences of non ' punctuation
+            //        i--;//don't get ob1
+            //    }
+            //}
+
+            document = new string(document.ToCharArray().Where(c => (!char.IsPunctuation(c) || c == '\'')).ToArray());//does the same as the above commented code
+
             while(document.IndexOf("  ") != -1)
             {
                 document = document.Replace("  ", " ");//replace double space with single space
