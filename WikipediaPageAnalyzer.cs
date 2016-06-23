@@ -11,12 +11,29 @@ namespace PhotoTagger
     {
         public static void Analyze(HtmlDocument document, ref Dictionary<String, List<Tag>> pictureIndex, ref List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
         {
+            int leniency = 10000;
+
             HtmlNode titleNode = document.DocumentNode.SelectSingleNode("//h1");
+            String title = "";
             if (titleNode != null)
-                Console.WriteLine(titleNode.InnerText);
+            {
+                title = titleNode.InnerText;
+                Console.WriteLine(title);
+            }
+
+            HtmlNode[] paragraphNodes = HelperFunctions.GetNodeArray(document, "//p");
+            String textDocument = "";
+            foreach (HtmlNode paragraphNode in paragraphNodes)
+                textDocument += " " + paragraphNode.InnerText;
+            List<word_freq> wordList = Occurrence.freq_check(textDocument);
+            HelperFunctions.RemoveWords(wordList, "stopwords.txt");
+            List<word_weight> weightedList = TitleChecker.InitWordWeight(wordList);
+            if (weightedList.Count > leniency)
+                weightedList.RemoveRange(leniency, weightedList.Count - leniency);
+            TitleChecker.CompareToTitle(true, weightedList, title);
 
             HtmlNode[] pictureNodes = new HtmlNode[0];
-            pictureNodes = GetNodeArray(document, "//div[@class='thumbcaption']");
+            pictureNodes = HelperFunctions.GetNodeArray(document, "//div[@class='thumbcaption']");
             Console.WriteLine(" Pictures: " + pictureNodes.Length);
             foreach (HtmlNode pictureNode in pictureNodes)
             {
@@ -36,7 +53,11 @@ namespace PhotoTagger
                             List<Tag> tagList;
                             pictureIndex.TryGetValue(pictureUrl, out tagList);
                             String caption = pictureNode.InnerText.Trim();
-                            while (caption.Length > 0)
+                            List<word_weight> currentList = new List<word_weight>(weightedList);
+                            TitleChecker.CompareToTitle(false, currentList, caption);
+                            foreach (word_weight ww in currentList)
+                                AddTagPriority(tagList, ww.word, ww.points);
+                            /*while (caption.Length > 0)
                             {
                                 int breakIndex = caption.Length;
                                 if (caption.IndexOf(" ") >= 0)
@@ -50,29 +71,11 @@ namespace PhotoTagger
                                         word = word.Substring(0, word.Length - 1);
                                 }
                                 word = word.ToLower();
-                                bool added = false;
-                                for (int i = 0; i < tagList.Count; i++)
-                                {
-                                    Tag tag = tagList[i];
-                                    if (tag.word.Equals(word))
-                                    {
-                                        tag.priority++;
-                                        added = true;
-                                        break;
-                                    }
-                                }
-                                if (!added)
-                                {
-                                    Tag newTag = new Tag();
-                                    newTag.word = word;
-                                    newTag.priority = 1;
-                                    tagList.Add(newTag);
-                                    //Console.WriteLine("   TAG: " + newTag.word);
-                                }
+                                AddTag(tagList, word);
                                 if (breakIndex >= caption.Length)
                                     breakIndex = caption.Length - 1;
                                 caption = caption.Substring(breakIndex + 1);
-                            }
+                            }*/
                             visitedUrls.Add(pictureUrl);
                         }
                     }
@@ -84,13 +87,51 @@ namespace PhotoTagger
             }
         }
 
-        private static HtmlNode[] GetNodeArray(HtmlDocument document, String tagName)
+        private static void AddTagPriority(List<Tag> tagList, String word, int priority)
         {
-            var x = document.DocumentNode.SelectNodes(tagName);
-            if (x != null)
-                return x.ToArray();
-            else
-                return new HtmlNode[0];
+            bool added = false;
+            for (int i = 0; i < tagList.Count; i++)
+            {
+                Tag tag = tagList[i];
+                if (tag.word.Equals(word))
+                {
+                    tag.priority++;
+                    added = true;
+                    break;
+                }
+            }
+            if (!added)
+            {
+                Tag newTag = new Tag();
+                newTag.word = word;
+                newTag.priority = priority;
+                Console.Write( " " + newTag.word);
+                tagList.Add(newTag);
+                //Console.WriteLine("   TAG: " + newTag.word);
+            }
+        }
+
+        private static void AddTag(List<Tag> tagList, String word)
+        {
+            bool added = false;
+            for (int i = 0; i < tagList.Count; i++)
+            {
+                Tag tag = tagList[i];
+                if (tag.word.Equals(word))
+                {
+                    tag.priority++;
+                    added = true;
+                    break;
+                }
+            }
+            if (!added)
+            {
+                Tag newTag = new Tag();
+                newTag.word = word;
+                newTag.priority = 20;
+                tagList.Add(newTag);
+                //Console.WriteLine("   TAG: " + newTag.word);
+            }
         }
     }
 }

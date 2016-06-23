@@ -36,7 +36,7 @@ namespace PhotoTagger
             startUrl = "https://en.wikipedia.org/wiki/Main_Page";
             key = "/wiki/";
             originUrl = startUrl.Substring(0, startUrl.IndexOf(key));
-            crawlLimit = 200;
+            crawlLimit = 50;
             Crawl();
             IndexTags();
             SearchTags();
@@ -121,6 +121,7 @@ namespace PhotoTagger
                 {
                     List<Picture> pictureList;
                     tagIndex.TryGetValue(searchTag, out pictureList);
+                    pictureList = pictureList.OrderBy(x => x.priority).ToList<Picture>();
                     foreach (Picture picture in pictureList)
                     {
                         Console.WriteLine(" " + picture.url);

@@ -12,7 +12,7 @@ namespace PhotoTagger
     {
         static void Main(string[] args)
         {
-            String url;
+            /*String url;
             List<String> urlChoices = new List<String>();//list for the user menu
             urlChoices.Add("https://www.washingtonpost.com/politics/trumps-top-example-of-foreign-experience-a-scottish-golf-course-losing-millions/2016/06/22/12ae9cb0-1883-11e6-9e16-2e5a123aac62_story.html?hpid=hp_hp-top-table-main_scotland_1250pm%3Ahomepage%2Fstory");
             urlChoices.Add("http://abcnews.go.com/Politics/donald-trump-slams-hillary-clinton-world-class-liar/story?id=40040353");
@@ -69,19 +69,12 @@ namespace PhotoTagger
             {
                 word_weight word = weightedList[i];
                 Console.WriteLine(word.word + ": " + word.points);//Debug test print
-            }
+            }*/
+
+            WebCrawler crawler = new WebCrawler();
 
             Console.ReadLine();//keep console open
         }
-
-        private static String GetNodeText(HtmlNode node)//param: node-the node to retrieve inner text from
-        {
-            HtmlAttribute desc = node.Attributes["content"];
-            if (desc != null)
-                return desc.Value;
-            else
-                return node.InnerText;
-        }//GetNodeText(HtmlNode node)
 
         private static String CheckWebsiteTags(String url, String type)//param: url-the url of desired website, type-a string governing if the returned tag is a subtitle or title tag
         {
@@ -107,47 +100,5 @@ namespace PhotoTagger
                         return "meta[@property='og:description']";//use standard html format. Again support for test version is limited further development in full version
             }
         }
-
-        private static void AddToArray(ref HtmlNode[] array1, HtmlNode[] array2)//param: array1-a reference to the array that needs an array added to it, array2-the array to be added to array1 
-        {
-            HtmlNode[] combinedArray = new HtmlNode[array1.Length + array2.Length];
-            array1.CopyTo(combinedArray, 0);
-            array2.CopyTo(combinedArray, array1.Length);
-            array1 = combinedArray;
-        }//AddToArray(ref HtmlNode[] array1, HtmlNode[] array2)
-
-        private static HtmlNode[] GetTagArray(HtmlDocument document, String tagName)//param: document-the document that is to be searched for html nodes, tagName-the desired tag in the document
-        {
-            var x = document.DocumentNode.SelectNodes(tagName);//get the nodes
-            if (x != null)
-                return x.ToArray();//if success return nodes
-            else
-                return new HtmlNode[0];//if nodes are not found return no nodes
-        }//GetTagArray(HtmlDocument document, String tagName)
-        
-        private static void RemoveWords(List<word_freq> wordList, String filename)//params: wordList-List of occurrences to have removed, filename-file with words to be removed
-        {
-            try
-            {
-                using (StreamReader sr = new StreamReader(filename))
-                {
-                    do
-                    {
-                        String word = sr.ReadLine();//get word to remove from txt file
-                        for (int i = 0; i < wordList.Count; i++)
-                        {
-                            word_freq wordCombo = wordList[i];
-                            if (wordCombo.word.Equals(word.ToLower()))//don't compare case
-                                wordList.RemoveAt(i);//remove word
-                        }
-                    } while (!sr.EndOfStream);
-
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }//RemoveWords(List<word_freq> wordList, String filename)
     }
 }
