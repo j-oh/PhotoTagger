@@ -59,7 +59,6 @@ can
 cannot
 cant
 co
-computer
 con
 could
 couldnt
@@ -207,6 +206,7 @@ please
 put
 rather
 re
+said
 same
 see
 seem
