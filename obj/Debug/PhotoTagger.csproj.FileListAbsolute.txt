@@ -25,3 +25,9 @@ C:\Users\klittle\PhotoTagger\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\klittle\PhotoTagger\bin\Debug\HtmlAgilityPack.xml
 C:\Users\Kyra\Documents\GitHub\PhotoTagger\bin\Debug\PhotoTagger.exe.config
 C:\Users\Kyra\Documents\GitHub\PhotoTagger\obj\Debug\PhotoTagger.exe
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\bin\Debug\PhotoTagger.exe
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\bin\Debug\PhotoTagger.pdb
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\obj\Debug\PhotoTagger.pdb

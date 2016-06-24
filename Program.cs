@@ -60,6 +60,7 @@ namespace PhotoTagger
             List<word_weight> weightedList = TitleChecker.InitWordWeight(wordList);//build a new weighted list based on the freq_list. the weighted list will assign points based on frequency
             TitleChecker.CompareToTitle(true, weightedList, GetNodeText(title));//the weighted list assigns points based on the title
             TitleChecker.CompareToTitle(false, weightedList, GetNodeText(subtitles[0]));//the weighted list assigns points based on the subtitle
+            SentenceAnalyzer.AnalyzeDocument(weightedList, textDocument);
             var new_list = weightedList.OrderBy(x => -x.points);//the list is sorted to show words with higher point values
             weightedList = new_list.ToList<word_weight>();//sets the weighted list equalto the sorting result
             int wordLimit = 15;//number of allowed tags

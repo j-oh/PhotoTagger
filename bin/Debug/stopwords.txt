@@ -207,6 +207,7 @@ put
 rather
 re
 said
+says
 same
 see
 seem
