@@ -9,7 +9,7 @@ namespace PhotoTagger
 {
     static class WikipediaPageAnalyzer
     {
-        public static void Analyze(HtmlDocument document, ref Dictionary<String, List<Tag>> pictureIndex, ref List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
+        public static bool Analyze(HtmlDocument document, ref Dictionary<String, List<Tag>> pictureIndex, ref List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
         {
             int leniency = 10000;
             int lengthLimit = 20000;
@@ -89,6 +89,7 @@ namespace PhotoTagger
                         Console.WriteLine(e.Message);
                     }
                 }
+                return true;
             }
             else
             {
@@ -97,6 +98,7 @@ namespace PhotoTagger
                 else
                     Console.WriteLine("  Skipped (longer than  " + lengthLimit + " characters)");
             }
+            return false;
         }
 
         private static void AddTagPriority(List<Tag> tagList, String word, int priority)

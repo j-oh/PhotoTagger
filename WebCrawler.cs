@@ -25,18 +25,22 @@ namespace PhotoTagger
         Dictionary<String, List<Picture>> tagIndex;
         List<String> visitedUrls;
         String startUrl, originUrl;
-        String key;
+        String key, antikey;
         int crawlLimit;
+        bool beginAtStart, forceData;
 
-        public WebCrawler() // Only works with Wikipedia at the moment but can be easily configured to work with other websites as well
+        public WebCrawler(String startUrl, String key, int crawlLimit, bool beginAtStart, bool forceData, String antikey = null) // Only works with Wikipedia at the moment but can be easily configured to work with other websites as well
         {
             pictureIndex = new Dictionary<String, List<Tag>>();
             tagIndex = new Dictionary<String, List<Picture>>();
             visitedUrls = new List<String>();
-            startUrl = "https://en.wikipedia.org/wiki/Main_Page";
-            key = "/wiki/";
+            this.startUrl = startUrl;
+            this.key = key;
+            this.antikey = antikey;
             originUrl = startUrl.Substring(0, startUrl.IndexOf(key));
-            crawlLimit = 8000;
+            this.crawlLimit = crawlLimit;
+            this.beginAtStart = beginAtStart;
+            this.forceData = forceData;
             Crawl();
             IndexTags();
             SearchTags();
@@ -51,11 +55,16 @@ namespace PhotoTagger
             while (currentUrl != null && crawlLimit > 0)
             {
                 document = web.Load(currentUrl);
-                if (!currentUrl.Equals(startUrl) && !visitedUrls.Contains(currentUrl))
+                bool extractedData = false;
+                if ((beginAtStart || !currentUrl.Equals(startUrl)) && !visitedUrls.Contains(currentUrl))
                 {
                     //Console.WriteLine(currentUrl);
-                    WikipediaPageAnalyzer.Analyze(document, ref pictureIndex, ref visitedUrls);
+                    if (startUrl.IndexOf("en.wikipedia.org") >= 0)
+                        extractedData = WikipediaPageAnalyzer.Analyze(document, ref pictureIndex, ref visitedUrls);
+                    else
+                        extractedData = RedditPageAnalyzer.Analyze(document, ref pictureIndex, ref visitedUrls);
                     visitedUrls.Add(currentUrl);
+                    if (!forceData || (extractedData && forceData))
                     crawlLimit--;
                     Console.WriteLine("\n" + crawlLimit + " remaining...\n");
                 }
@@ -68,8 +77,12 @@ namespace PhotoTagger
                 List<String> potentialUrls = new List<String>();
                 foreach (HtmlNode nextUrl in nextUrls)
                 {
-                    if (nextUrl.Attributes["href"] != null && nextUrl.Attributes["href"].Value.IndexOf(key) == 0 && nextUrl.Attributes["href"].Value.IndexOf(":") < 0)
-                        potentialUrls.Add(nextUrl.Attributes["href"].Value);
+                    if (nextUrl.Attributes["href"] != null)
+                    {
+                        String nextUrlString = nextUrl.Attributes["href"].Value;
+                        if (!nextUrlString.Equals(currentUrl) && nextUrlString.IndexOf(key) == 0 && nextUrlString.IndexOf(":") < 0 && (antikey == null || nextUrlString.IndexOf(antikey) < 0))
+                            potentialUrls.Add(nextUrl.Attributes["href"].Value);
+                    }
                 }
                 if (potentialUrls.Count > 0)
                 {
