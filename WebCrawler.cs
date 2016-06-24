@@ -33,14 +33,14 @@ namespace PhotoTagger
         {
             pictureIndex = new Dictionary<String, List<Tag>>();
             tagIndex = new Dictionary<String, List<Picture>>();
-            visitedUrls = new List<String>();
-            this.startUrl = startUrl;
-            this.key = key;
-            this.antikey = antikey;
-            originUrl = startUrl.Substring(0, startUrl.IndexOf(key));
-            this.crawlLimit = crawlLimit;
-            this.beginAtStart = beginAtStart;
-            this.forceData = forceData;
+            visitedUrls = new List<String>(); // Crawl() will skip already visitedUrls
+            this.startUrl = startUrl; // starts here and goes to random urls
+            this.key = key; // requires this in the url to extract data from this
+            this.antikey = antikey; // optional - if in the url, will ignore the data on the page and go to next url
+            originUrl = startUrl.Substring(0, startUrl.IndexOf(key)); // some links don't begin with the part that make it a url - needs this to make it a complete url
+            this.crawlLimit = crawlLimit; // how many pages to extract data from
+            this.beginAtStart = beginAtStart; // extract data from startUrl?
+            this.forceData = forceData; // count skipped pages in number of pages to extract data from?
             Crawl();
             IndexTags();
             SearchTags();
