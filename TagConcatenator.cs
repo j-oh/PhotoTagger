@@ -23,10 +23,10 @@ namespace PhotoTagger
 
             bool changedList = false;
             string concat = "";
-            for (int i = 0; i < weightedList.Count; i++)
+            for (int i = 0; i < 50; i++)
             {
                 string concatTest1 = weightedList[i].word;
-                for (int j = 0; j < weightedList.Count; j++)
+                for (int j = 0; j < 50; j++)
                 {
                     concat = concatTest1 + " " + weightedList[j].word;
                     int index = Int32.MaxValue;
@@ -40,12 +40,14 @@ namespace PhotoTagger
                             to_process = to_process.Substring(0, index) + to_process.Substring(index + concat.Length);
                         }
                     } while (index != -1) ;
-                    if (concatOccur > 1)
+                    if (concatOccur > 3 && concat.Length < 16)
                     {
                         int points = (weightedList[i].points + weightedList[j].points) / 2;
                         word_weight w = new word_weight(concat, points);
                         weightedList.Remove(weightedList[i]);
                         weightedList.Remove(weightedList[j]);
+                        i--;//don't get ob1
+                        j--;//don't get ob1
                         weightedList.Add(w);
                         changedList = true;
                     }
