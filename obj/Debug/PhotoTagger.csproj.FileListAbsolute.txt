@@ -20,3 +20,6 @@ C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyRefere
 C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.exe
 C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.pdb
 C:\Users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\MySql.Data.dll
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\bin\Debug\PhotoTagger.exe.config
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\obj\Debug\PhotoTagger.exe
+C:\Users\Kyra\Documents\GitHub\PhotoTagger\obj\Debug\PhotoTagger.pdb
