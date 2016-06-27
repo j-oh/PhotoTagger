@@ -49,7 +49,7 @@ namespace PhotoTagger
                         i--;//don't get ob1
                         j--;//don't get ob1
                         weightedList.Add(w);
-                        changedList = true;
+                        changedList = true;//set a flag to trigger a recursive call to this function
                     }
                 }
                 while (to_process.IndexOf("  ") != -1)
@@ -59,7 +59,7 @@ namespace PhotoTagger
             }
             if (changedList)
             {
-                ConcatenateTags(weightedList, docReference);
+                ConcatenateTags(weightedList, docReference);//call yourself back to attempt to concatenate strings if a string successfully concatenates
             }
         }
     }
