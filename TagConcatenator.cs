@@ -43,7 +43,7 @@ namespace PhotoTagger
                     if (concatOccur >= 3 && concat.Length < 32)//add a concatenation so long as it occurs twice in the article and is shorter than 32 characters
                     {
                         int points = (weightedList[i].points + weightedList[j].points) / 2;
-                        word_weight w = new word_weight(concat, points + (concatOccur * 500));//make a new word weight with the average of the concat objects two point values
+                        word_weight w = new word_weight(concat, points + (concatOccur * 2));//make a new word weight with the average of the concat objects two point values
                         weightedList.Remove(weightedList[i]);//remove objects that were concatenated so they arent tagged more than needed
                         weightedList.Remove(weightedList[j]);//remove objects that were concatenated so they arent tagged more than needed
                         //i--;//don't get ob1
