@@ -67,6 +67,7 @@ namespace PhotoTagger
                 if (let <= num)
                 {
                     weightedList.Remove(weightedList[i]);
+                    i--;
                 }
             }
         }

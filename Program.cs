@@ -13,7 +13,7 @@ namespace PhotoTagger
         static void Main(string[] args)
         {
             String url;
-            List<String> urlChoices = new List<String>();//list for the user menuB
+            List<String> urlChoices = new List<String>();//list for the user menu
             urlChoices.Add("https://www.washingtonpost.com/politics/trumps-top-example-of-foreign-experience-a-scottish-golf-course-losing-millions/2016/06/22/12ae9cb0-1883-11e6-9e16-2e5a123aac62_story.html?hpid=hp_hp-top-table-main_scotland_1250pm%3Ahomepage%2Fstory");
             urlChoices.Add("http://abcnews.go.com/Politics/donald-trump-slams-hillary-clinton-world-class-liar/story?id=40040353");
             urlChoices.Add("http://www.pcmag.com/news/343547/the-growing-threat-of-ransomware");
@@ -58,6 +58,8 @@ namespace PhotoTagger
             List<word_freq> wordList = Occurrence.freq_check(textDocument);//calls a frequency check (see Occurrences.cs)
             FilterWords.RemoveWords(wordList, "stopwords.txt");//removes occurrences of words from list based on a txt document of stopwords(see stopwords.txt)
             List<word_weight> weightedList = TitleChecker.InitWordWeight(wordList);//build a new weighted list based on the freq_list. the weighted list will assign points based on frequency
+            var new_list = weightedList.OrderBy(x => -x.points);//the list is sorted to show words with higher point values
+            weightedList = new_list.ToList<word_weight>();//sets the weighted list equalto the sorting result
             weightedList = FilterWords.LimitList(50, weightedList);
             TitleChecker.CompareToTitle(true, weightedList, GetNodeText(title));//the weighted list assigns points based on the title
             TitleChecker.CompareToTitle(false, weightedList, GetNodeText(subtitles[0]));//the weighted list assigns points based on the subtitle
@@ -65,9 +67,9 @@ namespace PhotoTagger
             TagConcatenator.ConcatenateTags(weightedList, textDocument);
             FilterWords.filterLetters(weightedList);
             FilterWords.RemoveNumbers(weightedList);
-            var new_list = weightedList.OrderBy(x => -x.points);//the list is sorted to show words with higher point values
+            new_list = weightedList.OrderBy(x => -x.points);//the list is sorted to show words with higher point values
             weightedList = new_list.ToList<word_weight>();//sets the weighted list equalto the sorting result
-            int wordLimit = 15;//number of allowed tags
+            int wordLimit = 20;//number of allowed tags
             if (wordLimit > weightedList.Count)
                 wordLimit = weightedList.Count;//truncate tags that are not in the top 15
             for (int i = 0; i < wordLimit; i++)

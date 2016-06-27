@@ -36,7 +36,7 @@ namespace PhotoTagger
                         paragraphsNearPicture = paragraphsNearPicture.Trim();
                     }
                 } while (index != -1);
-                }
-        }
+            }
+        }//CheckParagraphProximity(List<word_weight> weightedList, string paragraphsNearPicture)
     }
 }

@@ -28,7 +28,7 @@ namespace PhotoTagger
                 string concatTest1 = weightedList[i].word;
                 for (int j = 0; j < 20; j++)//due to both going to 50 and looping 8 times for each concatenation the loop can run up to 20,000 times without being called back
                 {
-                    concat = concatTest1 + " " + weightedList[j].word;//create a concatenation of the words in the list
+                    concat = (concatTest1 + " " + weightedList[j].word).ToLower();//create a concatenation of the words in the list
                     int index = Int32.MaxValue;
                     int concatOccur = 0;
                     do
@@ -40,16 +40,21 @@ namespace PhotoTagger
                             to_process = to_process.Substring(0, index) + to_process.Substring(index + concat.Length);//remove the concatenated string from the document text
                         }
                     } while (index != -1);
-                    if (concatOccur >= 3 && concat.Length < 32)//add a concatenation so long as it occurs twice in the article and is shorter than 32 characters
+                    if (concatOccur >= 2 && concat.Length < 32)//add a concatenation so long as it occurs twice in the article and is shorter than 32 characters
                     {
-                        int points = (weightedList[i].points + weightedList[j].points) / 2;
-                        word_weight w = new word_weight(concat, points + (concatOccur * 2));//make a new word weight with the average of the concat objects two point values
-                        weightedList.Remove(weightedList[i]);//remove objects that were concatenated so they arent tagged more than needed
-                        weightedList.Remove(weightedList[j]);//remove objects that were concatenated so they arent tagged more than needed
+                        int points = (weightedList[i].points + weightedList[j].points) / 6;
+                        word_weight w = new word_weight(concat, points + (concatOccur * 5));//make a new word weight with the average of the concat objects two point values
+                        if (weightedList[i].points < 25 && weightedList[j].points < 25)
+                        {
+                            weightedList.Remove(weightedList[i]);//remove objects that were concatenated so they arent tagged more than needed
+                            weightedList.Remove(weightedList[j]);//remove objects that were concatenated so they arent tagged more than needed
+                            i--;
+                            j--;
+                        }
                         //i--;//don't get ob1
                         //j--;//don't get ob1
                         weightedList.Add(w);
-                        changedList = true;//set a flag to trigger a recursive call to this function
+                        changedList = false;//set a flag to trigger a recursive call to this function
                     }
                 }
                 while (to_process.IndexOf("  ") != -1)
