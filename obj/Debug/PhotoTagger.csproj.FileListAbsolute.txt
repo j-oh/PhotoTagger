@@ -19,3 +19,4 @@ C:\Users\chstevens\PhotoTagger\bin\Debug\HtmlAgilityPack.xml
 C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.csprojResolveAssemblyReference.cache
 C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.exe
 C:\Users\chstevens\PhotoTagger\obj\Debug\PhotoTagger.pdb
+C:\Users\joh\documents\visual studio 2013\Projects\PhotoTagger\PhotoTagger\bin\Debug\MySql.Data.dll

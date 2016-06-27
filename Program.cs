@@ -71,10 +71,10 @@ namespace PhotoTagger
                 Console.WriteLine(word.word + ": " + word.points);//Debug test print
             }*/
 
-            WebCrawler crawler = new WebCrawler("https://en.wikipedia.org/wiki/Main_Page", "/wiki/", 800, false, true);
+            WebCrawler crawler = new WebCrawler("https://en.wikipedia.org/wiki/Main_Page", "/wiki/", 0, false, true);
             //WebCrawler crawler = new WebCrawler("https://www.reddit.com/r/random", "/r/", 30, true, true, "/comments/");
 
-            Console.ReadLine();//keep console open
+            //Console.ReadLine();//keep console open
         }
 
         private static String CheckWebsiteTags(String url, String type)//param: url-the url of desired website, type-a string governing if the returned tag is a subtitle or title tag

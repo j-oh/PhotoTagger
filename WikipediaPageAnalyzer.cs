@@ -11,8 +11,8 @@ namespace PhotoTagger
     {
         public static bool Analyze(HtmlDocument document, ref Dictionary<String, List<Tag>> pictureIndex, ref List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
         {
-            int leniency = 10000;
-            int lengthLimit = 20000;
+            int leniency = 20;
+            int lengthLimit = 5000;
 
             HtmlNode titleNode = document.DocumentNode.SelectSingleNode("//h1");
             String title = "";
@@ -96,7 +96,7 @@ namespace PhotoTagger
                 if (pictureNodes.Length <= 0)
                     Console.WriteLine("  Skipped (no pictures)");
                 else
-                    Console.WriteLine("  Skipped (longer than  " + lengthLimit + " characters)");
+                    Console.WriteLine("  Skipped (longer than " + lengthLimit + " characters)");
             }
             return false;
         }
