@@ -61,6 +61,6 @@ namespace PhotoTagger
             {
                 ConcatenateTags(weightedList, docReference);//call yourself back to attempt to concatenate strings if a string successfully concatenates
             }
-        }
+        }//ConcatenateTags(List<word_weight> weightedList, string docReference)
     }
 }
