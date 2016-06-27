@@ -108,7 +108,7 @@ namespace PhotoTagger
                     else
                         return "meta[@property='og:description']";//use standard html format. Again support for test version is limited further development in full version
             }
-        }
+        }//CheckWebsiteTags(String url, String type)
 
         private static void AddToArray(ref HtmlNode[] array1, HtmlNode[] array2)//param: array1-a reference to the array that needs an array added to it, array2-the array to be added to array1 
         {
