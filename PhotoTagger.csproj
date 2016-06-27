@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FilterWords.cs" />
+    <Compile Include="ProximityCheck.cs" />
     <Compile Include="TagConcatenator.cs" />
     <Compile Include="SentenceAnalyzer.cs" />
     <Compile Include="Occurrence.cs" />
