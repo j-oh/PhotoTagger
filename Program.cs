@@ -13,7 +13,7 @@ namespace PhotoTagger
         static void Main(string[] args)
         {
             String url;
-            List<String> urlChoices = new List<String>();//list for the user menu
+            List<String> urlChoices = new List<String>();//list for the user menuB
             urlChoices.Add("https://www.washingtonpost.com/politics/trumps-top-example-of-foreign-experience-a-scottish-golf-course-losing-millions/2016/06/22/12ae9cb0-1883-11e6-9e16-2e5a123aac62_story.html?hpid=hp_hp-top-table-main_scotland_1250pm%3Ahomepage%2Fstory");
             urlChoices.Add("http://abcnews.go.com/Politics/donald-trump-slams-hillary-clinton-world-class-liar/story?id=40040353");
             urlChoices.Add("http://www.pcmag.com/news/343547/the-growing-threat-of-ransomware");
@@ -56,12 +56,15 @@ namespace PhotoTagger
                 textDocument += GetNodeText(item);//add text to textDocument
 
             List<word_freq> wordList = Occurrence.freq_check(textDocument);//calls a frequency check (see Occurrences.cs)
-            RemoveWords(wordList, "stopwords.txt");//removes occurrences of words from list based on a txt document of stopwords(see stopwords.txt)
+            FilterWords.RemoveWords(wordList, "stopwords.txt");//removes occurrences of words from list based on a txt document of stopwords(see stopwords.txt)
             List<word_weight> weightedList = TitleChecker.InitWordWeight(wordList);//build a new weighted list based on the freq_list. the weighted list will assign points based on frequency
+            weightedList = FilterWords.LimitList(50, weightedList);
             TitleChecker.CompareToTitle(true, weightedList, GetNodeText(title));//the weighted list assigns points based on the title
             TitleChecker.CompareToTitle(false, weightedList, GetNodeText(subtitles[0]));//the weighted list assigns points based on the subtitle
             SentenceAnalyzer.AnalyzeDocument(weightedList, textDocument);//allocates points based proximity to key words in the document
             TagConcatenator.ConcatenateTags(weightedList, textDocument);
+            FilterWords.filterLetters(weightedList);
+            FilterWords.RemoveNumbers(weightedList);
             var new_list = weightedList.OrderBy(x => -x.points);//the list is sorted to show words with higher point values
             weightedList = new_list.ToList<word_weight>();//sets the weighted list equalto the sorting result
             int wordLimit = 15;//number of allowed tags
@@ -125,31 +128,6 @@ namespace PhotoTagger
                 return x.ToArray();//if success return nodes
             else
                 return new HtmlNode[0];//if nodes are not found return no nodes
-        }//GetTagArray(HtmlDocument document, String tagName)
-        
-        private static void RemoveWords(List<word_freq> wordList, String filename)//params: wordList-List of occurrences to have removed, filename-file with words to be removed
-        {
-            try
-            {
-                using (StreamReader sr = new StreamReader(filename))
-                {
-                    do
-                    {
-                        String word = sr.ReadLine();//get word to remove from txt file
-                        for (int i = 0; i < wordList.Count; i++)
-                        {
-                            word_freq wordCombo = wordList[i];
-                            if (wordCombo.word.Equals(word.ToLower()))//don't compare case
-                                wordList.RemoveAt(i);//remove word
-                        }
-                    } while (!sr.EndOfStream);
-
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }//RemoveWords(List<word_freq> wordList, String filename)
+        }//GetTagArray(HtmlDocument document, String tagName)SS
     }
 }
