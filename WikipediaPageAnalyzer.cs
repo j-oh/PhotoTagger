@@ -9,7 +9,7 @@ namespace PhotoTagger
 {
     static class WikipediaPageAnalyzer
     {
-        public static bool Analyze(HtmlDocument document, ref Dictionary<String, List<Tag>> pictureIndex, ref List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
+        public static bool Analyze(HtmlDocument document, Dictionary<Picture, List<Tag>> pictureIndex, String currentUrl, List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
         {
             int leniency = 20;
             int lengthLimit = 5000;
@@ -52,35 +52,30 @@ namespace PhotoTagger
                                 pictureUrl = "https://en.wikipedia.org" + pictureUrl;
                             if (!visitedUrls.Contains(pictureUrl))
                             {
-                                //Console.WriteLine("  " + pictureUrl);
-                                pictureIndex.Add(pictureUrl, new List<Tag>());
-                                List<Tag> tagList;
-                                pictureIndex.TryGetValue(pictureUrl, out tagList);
-                                String caption = pictureNode.InnerText.Trim();
-                                List<word_weight> currentList = new List<word_weight>(weightedList);
-                                TitleChecker.CompareToTitle(false, currentList, caption);
-                                foreach (word_weight ww in currentList)
-                                    AddTagPriority(tagList, ww.word, ww.points);
-                                /*while (caption.Length > 0)
+                                HtmlWeb web = new HtmlWeb();
+                                HtmlDocument pictureDocument = web.Load(pictureUrl);
+                                HtmlNode[] nextPictureNodes = HelperFunctions.GetNodeArray(pictureDocument, "//img");
+
+                                foreach (HtmlNode nextPictureNode in nextPictureNodes)
                                 {
-                                    int breakIndex = caption.Length;
-                                    if (caption.IndexOf(" ") >= 0)
-                                        breakIndex = caption.IndexOf(" ");
-                                    String word = caption.Substring(0, breakIndex);
-                                    if (word.Length > 0)
+                                    String pictureSource = nextPictureNode.Attributes["src"].Value;
+                                    if (pictureSource.IndexOf("/commons/") >= 0)
                                     {
-                                        if (Char.IsPunctuation(word[0]))
-                                            word = word.Substring(0, 1);
-                                        if (Char.IsPunctuation(word[word.Length - 1]))
-                                            word = word.Substring(0, word.Length - 1);
+                                        Picture picture = new Picture();
+                                        picture.url = "https:" + pictureSource;
+                                        picture.source = currentUrl;
+                                        pictureIndex.Add(picture, new List<Tag>());
+                                        List<Tag> tagList;
+                                        pictureIndex.TryGetValue(picture, out tagList);
+                                        String caption = pictureNode.InnerText.Trim();
+                                        List<word_weight> currentList = new List<word_weight>(weightedList);
+                                        TitleChecker.CompareToTitle(false, currentList, caption);
+                                        foreach (word_weight ww in currentList)
+                                            AddTagPriority(tagList, ww.word, ww.points);
+                                        visitedUrls.Add(pictureUrl);
+                                        break;
                                     }
-                                    word = word.ToLower();
-                                    AddTag(tagList, word);
-                                    if (breakIndex >= caption.Length)
-                                        breakIndex = caption.Length - 1;
-                                    caption = caption.Substring(breakIndex + 1);
-                                }*/
-                                visitedUrls.Add(pictureUrl);
+                                }
                             }
                         }
                     }

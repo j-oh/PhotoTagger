@@ -17,12 +17,12 @@ namespace PhotoTagger
     public struct Picture
     {
         public String url;
-        public int priority;
+        public String source;
     }
 
     class WebCrawler
     {
-        Dictionary<String, List<Tag>> pictureIndex;
+        Dictionary<Picture, List<Tag>> pictureIndex;
         Dictionary<String, List<Picture>> tagIndex;
         Dictionary<String, List<Picture>> tempTagIndex;
         List<String> visitedUrls;
@@ -33,9 +33,9 @@ namespace PhotoTagger
 
         public WebCrawler(String startUrl, String key, int crawlLimit, bool beginAtStart, bool forceData, String antikey = null) // Only works with Wikipedia at the moment but can be easily configured to work with other websites as well
         {
-            pictureIndex = new Dictionary<String, List<Tag>>();
-            tagIndex = new Dictionary<String, List<Picture>>();
-            tempTagIndex = new Dictionary<String, List<Picture>>();
+            pictureIndex = new Dictionary<Picture, List<Tag>>();
+            tagIndex = new Dictionary<String, List<Picture>>();  // unneeded
+            tempTagIndex = new Dictionary<String, List<Picture>>();  // unneeded
             visitedUrls = new List<String>(); // Crawl() will skip already visitedUrls
             this.startUrl = startUrl; // starts here and goes to random urls
             this.key = key; // requires this in the url to extract data from this
@@ -44,7 +44,9 @@ namespace PhotoTagger
             this.crawlLimit = crawlLimit; // how many pages to extract data from
             this.beginAtStart = beginAtStart; // extract data from startUrl?
             this.forceData = forceData; // count skipped pages in number of pages to extract data from?
-            insertInterval = 200;
+            insertInterval = 5;
+            HelperFunctions.DBRemember(visitedUrls);
+            //HelperFunctions.DBDeleteAll();
             Crawl();
             SearchTags();
         }
@@ -64,9 +66,9 @@ namespace PhotoTagger
                 {
                     Console.WriteLine(currentUrl);
                     if (startUrl.IndexOf("en.wikipedia.org") >= 0)
-                        extractedData = WikipediaPageAnalyzer.Analyze(document, ref pictureIndex, ref visitedUrls);
-                    else
-                        extractedData = RedditPageAnalyzer.Analyze(document, ref pictureIndex, ref visitedUrls);
+                        extractedData = WikipediaPageAnalyzer.Analyze(document, pictureIndex, currentUrl, visitedUrls);
+                    //else
+                        //extractedData = RedditPageAnalyzer.Analyze(document, ref pictureIndex, ref visitedUrls);
                     visitedUrls.Add(currentUrl);
                     if (!forceData || (extractedData && forceData))
                     crawlLimit--;
@@ -100,7 +102,7 @@ namespace PhotoTagger
 
                 if (crawlLimit <= 0 || crawlLimit == nextLimit)
                 {
-                    IndexTags();
+                    //IndexTags();  // unneeded
                     DBInsert();
                     pictureIndex.Clear();
                     tempTagIndex.Clear();
@@ -118,18 +120,11 @@ namespace PhotoTagger
                 connection.Open();
                 Console.WriteLine("Connected to database\n");
 
-                //MySqlCommand command = new MySqlCommand("DELETE FROM Tags", connection);
-                //command.ExecuteNonQuery();
-                //Console.WriteLine("Deleted all rows from database");
-
-                foreach (KeyValuePair<String, List<Picture>> pair in tempTagIndex)
+                foreach (KeyValuePair<Picture, List<Tag>> pair in pictureIndex)
                 {
-                    List<Picture> pictureList = pair.Value;
-                    pictureList = pictureList.OrderBy(x => -x.priority).ToList<Picture>();
-                    List<String> urlList = new List<String>();
-                    foreach (Picture picture in pair.Value)
-                        urlList.Add(picture.url);
-                    HelperFunctions.DBInsert(connection, "Tags", pair.Key, urlList);
+                    List<Tag> tagList = pair.Value;
+                    tagList = tagList.OrderBy(x => -x.priority).ToList<Tag>();
+                    HelperFunctions.DBInsert(connection, pair.Key.url, pair.Key.source, tagList);
                 }
             }
             catch (MySqlException ex)
@@ -142,15 +137,15 @@ namespace PhotoTagger
                 if (connection != null)
                 {
                     connection.Close();
-                    Console.WriteLine("\nDatabase insertion successful");
+                    Console.WriteLine("\nDatabase insertion successful\n");
                 }
             }
         }
 
-        private void IndexTags() // Transfers information from pictureIndex to tagIndex to make it easy to search
+        /*private void IndexTags() // Transfers information from pictureIndex to tagIndex to make it easy to search  // unneeded
         {
             Console.WriteLine("Indexing tags...\n");
-            foreach (KeyValuePair<String, List<Tag>> pair in pictureIndex)
+            foreach (KeyValuePair<Picture, List<Tag>> pair in pictureIndex)
             {
                 List<Tag> tagList = pair.Value;
                 foreach (Tag tag in tagList)
@@ -173,7 +168,7 @@ namespace PhotoTagger
                     //Console.WriteLine(tag.word);
                 }
             }
-        }
+        }*/
 
         private void SearchTags() // Search for pictures using tags
         {
@@ -183,7 +178,7 @@ namespace PhotoTagger
             {
                 connection = new MySqlConnection(@"server=db4free.net;userid=jo35;password=kkkKKK12;database=phototag");
                 connection.Open();
-                Console.WriteLine("\n\nConnected to database\n");
+                Console.WriteLine("\nConnected to database\n");
 
                 while (searchTag != "q")
                 {
@@ -193,7 +188,7 @@ namespace PhotoTagger
                     Console.WriteLine();
                     if (searchTag.Equals("q"))
                         break;
-                    List<String> urlList = HelperFunctions.DBSearch(connection, "Tags", searchTag);
+                    List<String> urlList = HelperFunctions.DBSearch(connection, searchTag);
                     if (urlList != null)
                     {
                         foreach (String url in urlList)
@@ -207,7 +202,7 @@ namespace PhotoTagger
             catch (MySqlException ex)
             {
                 Console.WriteLine("Error: {0}", ex.ToString());
-
+                Console.ReadLine();
             }
             finally
             {
