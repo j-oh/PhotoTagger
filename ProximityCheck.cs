@@ -14,10 +14,10 @@ namespace PhotoTagger
             paragraphsNearPicture = paragraphsNearPicture.Trim();//remove leading and trailing whitespace
             paragraphsNearPicture = new string(paragraphsNearPicture.ToCharArray().Where(c => (!char.IsPunctuation(c) || c == '\'')).ToArray());//does the same as the above commented code
 
-            while (paragraphsNearPicture.IndexOf("  ") != -1)
+            /*while (paragraphsNearPicture.IndexOf("  ") != -1)
             {
                 paragraphsNearPicture = paragraphsNearPicture.Replace("  ", " ");//replace double space with single space
-            }
+            }*/
             int index = -1;
             for (int i = 0; i < weightedList.Count; i++)//loop for every word in the weighted list
             {

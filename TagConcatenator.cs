@@ -17,10 +17,10 @@ namespace PhotoTagger
                 to_process = to_process.ToLower();//don't compare case
                 to_process = to_process.Trim();//remove leading and trailing whitespace
                 to_process = new string(to_process.ToCharArray().Where(c => (!char.IsPunctuation(c))).ToArray());//remove punctuation
-                while (to_process.IndexOf("  ") != -1)
+                /*while (to_process.IndexOf("  ") != -1)
                 {
                     to_process = to_process.Replace("  ", " ");//replace double space with single space
-                }
+                }*/
                 //end prepare title content for processing
 
                 bool changedList = false;

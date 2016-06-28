@@ -43,10 +43,10 @@ namespace PhotoTagger
                     i--;//don't get ob1
                 }
             }
-            while (to_process.IndexOf("  ") != -1)
-            {
-                to_process = to_process.Replace("  ", " ");//replace double space with single space
-            }
+            //while (to_process.IndexOf("  ") != -1)
+            //{
+                //to_process = to_process.Replace("  ", " ");//replace double space with single space
+            //}
             //end prepare title content for processing
             int index = -1;
             for (int i = 0; i < weight_list.Count; i++)//loop for every word in the weighted list
