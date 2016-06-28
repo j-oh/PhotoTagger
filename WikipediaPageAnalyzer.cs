@@ -34,6 +34,7 @@ namespace PhotoTagger
             {
                 List<word_freq> wordList = Occurrence.freq_check(textDocument);
                 HelperFunctions.RemoveWords(wordList, "stopwords.txt");
+                HelperFunctions.RemoveWords(wordList, "adverbs.txt");
                 List<word_weight> weightedList = TitleChecker.InitWordWeight(wordList);
                 if (weightedList.Count > leniency)
                     weightedList.RemoveRange(leniency, weightedList.Count - leniency);
@@ -74,16 +75,16 @@ namespace PhotoTagger
                                             List<word_weight> currentList = new List<word_weight>(weightedList); //algorithm stuff
                                             var cList = currentList.OrderBy(x => -x.points);
                                             currentList = cList.ToList<word_weight>();
-                                            currentList = FilterWords.LimitList(50, weightedList);
+                                            currentList = FilterWords.LimitList(50, currentList);
                                             TitleChecker.CompareToTitle(true, currentList, title);
                                             TitleChecker.CompareToTitle(false, currentList, caption);
                                             SentenceAnalyzer.AnalyzeDocument(currentList, textDocument);
-                                            //TagConcatenator.ConcatenateTags(currentList, textDocument);
+                                            TagConcatenator.ConcatenateTags(currentList, textDocument);
                                             FilterWords.filterLetters(currentList);
                                             FilterWords.RemoveNumbers(currentList);
                                             cList = currentList.OrderBy(x => -x.points);
                                             currentList = cList.ToList<word_weight>();
-
+                                            currentList = FilterWords.LimitList(20, currentList);
                                             foreach (word_weight ww in currentList)
                                                 AddTagPriority(tagList, ww.word, ww.points);
                                             visitedUrls.Add(pictureUrl);

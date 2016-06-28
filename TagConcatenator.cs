@@ -23,10 +23,10 @@ namespace PhotoTagger
 
             bool changedList = false;
             string concat = "";
-            for (int i = 0; i < 20; i++)//only goes to 50 words so that program won't take hours to resolve
+            for (int i = 0; i < weightedList.Count; i++)//only goes to 50 words so that program won't take hours to resolve
             {
                 string concatTest1 = weightedList[i].word;
-                for (int j = 0; j < 20; j++)//due to both going to 50 and looping 8 times for each concatenation the loop can run up to 20,000 times without being called back
+                for (int j = 0; j < weightedList.Count; j++)//due to both going to 50 and looping 8 times for each concatenation the loop can run up to 20,000 times without being called back
                 {
                     concat = (concatTest1 + " " + weightedList[j].word).ToLower();//create a concatenation of the words in the list
                     int index = Int32.MaxValue;
@@ -48,8 +48,14 @@ namespace PhotoTagger
                         {
                             weightedList.Remove(weightedList[i]);//remove objects that were concatenated so they arent tagged more than needed
                             weightedList.Remove(weightedList[j]);//remove objects that were concatenated so they arent tagged more than needed
-                            i--;
-                            j--;
+                            if (i != 0)
+                            {
+                                i--;
+                            }
+                            if (j != 0)
+                            {
+                                j--;
+                            }
                         }
                         //i--;//don't get ob1
                         //j--;//don't get ob1
