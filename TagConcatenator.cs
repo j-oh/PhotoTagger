@@ -79,6 +79,10 @@ namespace PhotoTagger
             {
                 Console.WriteLine(e.Message);
             }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }//ConcatenateTags(List<word_weight> weightedList, string docReference)
     }
 }
