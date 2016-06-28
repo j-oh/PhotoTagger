@@ -24,7 +24,7 @@ namespace PhotoTagger
             List<word_weight> weight_list = new List<word_weight>();
             foreach (word_freq freq in freq_list)
             {
-                weight_list.Add(new word_weight(freq.word, (freq.freq/3)));//init word_weights based on words in the freq_list. Number of frequency corresponds to 1/6th the ammount of points(this is arbitrary and may need tuning)
+                weight_list.Add(new word_weight(freq.word, (freq.freq / 6)));//init word_weights based on words in the freq_list. Number of frequency corresponds to 1/6th the ammount of points(this is arbitrary and may need tuning)
             }
             return weight_list;//returns list with all words from freq_list ready to be scored
         }//InitWordWeight(List<word_freq> freq_list)
@@ -43,17 +43,17 @@ namespace PhotoTagger
                     i--;//don't get ob1
                 }
             }
-            //while (to_process.IndexOf("  ") != -1)
-            //{
-                //to_process = to_process.Replace("  ", " ");//replace double space with single space
-            //}
+            while (to_process.IndexOf("  ") != -1)
+            {
+                to_process = to_process.Replace("  ", " ");//replace double space with single space
+            }
             //end prepare title content for processing
             int index = -1;
             for (int i = 0; i < weight_list.Count; i++)//loop for every word in the weighted list
             {
                 do
                 {
-                    index = to_process.IndexOf(" " + weight_list[i].word+ " ");//spaces to only get words from the title
+                    index = to_process.IndexOf(" " + weight_list[i].word + " ");//spaces to only get words from the title
 
                     if (index != -1)
                     {

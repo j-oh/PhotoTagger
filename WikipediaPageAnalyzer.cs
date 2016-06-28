@@ -64,16 +64,31 @@ namespace PhotoTagger
                                         Picture picture = new Picture();
                                         picture.url = "https:" + pictureSource;
                                         picture.source = currentUrl;
-                                        pictureIndex.Add(picture, new List<Tag>());
-                                        List<Tag> tagList;
-                                        pictureIndex.TryGetValue(picture, out tagList);
-                                        String caption = pictureNode.InnerText.Trim();
-                                        List<word_weight> currentList = new List<word_weight>(weightedList);
-                                        TitleChecker.CompareToTitle(false, currentList, caption);
-                                        foreach (word_weight ww in currentList)
-                                            AddTagPriority(tagList, ww.word, ww.points);
-                                        visitedUrls.Add(pictureUrl);
-                                        break;
+                                        if (!pictureIndex.ContainsKey(picture))
+                                        {
+                                            pictureIndex.Add(picture, new List<Tag>());
+                                            List<Tag> tagList;
+                                            pictureIndex.TryGetValue(picture, out tagList);
+                                            String caption = pictureNode.InnerText.Trim();
+
+                                            List<word_weight> currentList = new List<word_weight>(weightedList); //algorithm stuff
+                                            var cList = currentList.OrderBy(x => -x.points);
+                                            currentList = cList.ToList<word_weight>();
+                                            currentList = FilterWords.LimitList(50, weightedList);
+                                            TitleChecker.CompareToTitle(true, currentList, title);
+                                            TitleChecker.CompareToTitle(false, currentList, caption);
+                                            SentenceAnalyzer.AnalyzeDocument(currentList, textDocument);
+                                            //TagConcatenator.ConcatenateTags(currentList, textDocument);
+                                            FilterWords.filterLetters(currentList);
+                                            FilterWords.RemoveNumbers(currentList);
+                                            cList = currentList.OrderBy(x => -x.points);
+                                            currentList = cList.ToList<word_weight>();
+
+                                            foreach (word_weight ww in currentList)
+                                                AddTagPriority(tagList, ww.word, ww.points);
+                                            visitedUrls.Add(pictureUrl);
+                                            break;
+                                        }
                                     }
                                 }
                             }

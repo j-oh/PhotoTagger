@@ -35,6 +35,10 @@ namespace PhotoTagger
 
             document = new string(document.ToCharArray().Where(c => (!char.IsPunctuation(c) || c == '\'')).ToArray());//does the same as the above commented code
 
+            //while (document.IndexOf("  ") != -1)
+            //{
+                //document = document.Replace("  ", " ");//replace double space with single space
+            //}
             List<word_freq> freq_list = new List<word_freq>();
             while (document != "")
             {
@@ -54,7 +58,7 @@ namespace PhotoTagger
                     document = document.Substring(0, index) + document.Substring(index + checking.Length + 1);//remove word from document string
                     to_make.freq++;//increment the frequency of current word
                 }
-                
+
                 freq_list.Add(to_make);//add to list
                 document = document.Trim();//remove whitespace to prevent infinite looping
             }
