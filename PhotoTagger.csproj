@@ -66,6 +66,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="adverbs.txt" />
     <Content Include="conjunctions.txt" />
     <Content Include="importancedelineators.txt" />
     <Content Include="prepositions.txt" />
