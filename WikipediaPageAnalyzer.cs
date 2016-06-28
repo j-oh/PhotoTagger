@@ -49,6 +49,7 @@ namespace PhotoTagger
                         String pictureUrl = pictureHref.Value;
                         if (pictureUrl.IndexOf("File:") >= 0)
                         {
+                            String cutoff = pictureUrl.Substring(pictureUrl.IndexOf("File:") + 5);
                             if (pictureUrl.IndexOf("http") < 0)
                                 pictureUrl = "https://en.wikipedia.org" + pictureUrl;
                             if (!visitedUrls.Contains(pictureUrl))
@@ -60,8 +61,9 @@ namespace PhotoTagger
                                 foreach (HtmlNode nextPictureNode in nextPictureNodes)
                                 {
                                     String pictureSource = nextPictureNode.Attributes["src"].Value;
-                                    if (pictureSource.IndexOf("/commons/") >= 0)
+                                    if (pictureSource.IndexOf(cutoff) >= 0)
                                     {
+                                        Console.WriteLine("  " + cutoff);
                                         Picture picture = new Picture();
                                         picture.url = "https:" + pictureSource;
                                         picture.source = currentUrl;
