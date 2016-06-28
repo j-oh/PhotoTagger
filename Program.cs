@@ -71,7 +71,7 @@ namespace PhotoTagger
                 Console.WriteLine(word.word + ": " + word.points);//Debug test print
             }*/
 
-            WebCrawler crawler = new WebCrawler("https://en.wikipedia.org/wiki/Main_Page", "/wiki/", 0, false, true);
+            WebCrawler crawler = new WebCrawler("https://en.wikipedia.org/wiki/Main_Page", "/wiki/", Int32.MaxValue, false, true);
             //WebCrawler crawler = new WebCrawler("https://www.reddit.com/r/random", "/r/", 30, true, true, "/comments/");
 
             //Console.ReadLine();//keep console open
