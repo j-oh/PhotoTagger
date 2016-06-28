@@ -65,10 +65,10 @@ namespace PhotoTagger
                             changedList = false;//set a flag to trigger a recursive call to this function
                         }
                     }
-                    while (to_process.IndexOf("  ") != -1)
+                    /*while (to_process.IndexOf("  ") != -1)
                     {
                         to_process = to_process.Replace("  ", " ");//replace double space with single space
-                    }
+                    }*/
                 }
                 if (changedList)
                 {
