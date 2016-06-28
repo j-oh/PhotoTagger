@@ -12,7 +12,7 @@ namespace PhotoTagger
         public static bool Analyze(HtmlDocument document, Dictionary<Picture, List<Tag>> pictureIndex, String currentUrl, List<String> visitedUrls) // Uses subtitles of Wikipedia article pictures to tag them
         {
             int leniency = 20;
-            int lengthLimit = 50000;
+            int lengthLimit = 50000000;
 
             HtmlNode titleNode = document.DocumentNode.SelectSingleNode("//h1");
             String title = "";
