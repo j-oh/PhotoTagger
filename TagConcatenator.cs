@@ -42,7 +42,7 @@ namespace PhotoTagger
                                 to_process = to_process.Substring(0, index) + to_process.Substring(index + concat.Length);//remove the concatenated string from the document text
                             }
                         } while (index != -1);
-                        if (concatOccur >= 2 && concat.Length < 32)//add a concatenation so long as it occurs twice in the article and is shorter than 32 characters
+                        if (concatOccur >= 1 && concat.Length < 32)//add a concatenation so long as it occurs twice in the article and is shorter than 32 characters
                         {
                             int points = (weightedList[i].points + weightedList[j].points) / 6;
                             word_weight w = new word_weight(concat, points + (concatOccur * 5));//make a new word weight with the average of the concat objects two point values

@@ -89,6 +89,10 @@ namespace PhotoTagger
                                             currentList = FilterWords.LimitList(20, currentList);
                                             foreach (word_weight ww in currentList)
                                                 AddTagPriority(tagList, ww.word, ww.points);
+                                            foreach (Tag tag in tagList)
+                                            {
+                                                Console.WriteLine(tag.word);
+                                            }
                                             visitedUrls.Add(pictureUrl);
                                             break;
                                         }

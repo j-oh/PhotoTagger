@@ -66,7 +66,7 @@ namespace PhotoTagger
                         else
                         {
                             word_weight w = weight_list.ElementAt(i);
-                            w.points += 4;//assign 4 points if the word is in the subtitle(perhaps needs to be tuned for accuracy)
+                            w.points += 10;//assign 4 points if the word is in the subtitle(perhaps needs to be tuned for accuracy)
                             weight_list[i] = w;
                         }
                     }
